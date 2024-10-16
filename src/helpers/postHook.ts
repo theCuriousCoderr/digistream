@@ -1,3 +1,5 @@
+"use client"
+
 import encode from "./encode";
 import BE_URL from "./getEnvironment";
 

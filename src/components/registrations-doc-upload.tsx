@@ -1,3 +1,5 @@
+"use client"
+
 import { ChevronLeft, FileUp } from "lucide-react";
 import { ChangeEvent, FormEvent, useState } from "react";
 import Spinner from "./spinner";

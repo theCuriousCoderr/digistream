@@ -1,3 +1,5 @@
+"use client"
+
 import decode from "@/helpers/decode";
 import postHook from "@/helpers/postHook";
 import useViewDocumentsModalStore from "@/store/useViewDocumentModal.store";
