@@ -30,8 +30,12 @@ export default function StudentDashboardLayout({
   const [activeTab, setActiveTab] = useState("Registrations");
   const [baseState, setBaseState] = useState(true);
   const [sideNav, setSideNav] = useState(false);
+  const [  matric, setMatric] = useState("");
   const pathName = usePathname();
+
+
   useEffect(() => {
+    setMatric(decode(localStorage.getItem("matric") as string));
     console.log(activeTab);
     async function AuthLayout() {
       const isAuth = await postHook("/student-dashboard", {});
@@ -143,7 +147,7 @@ export default function StudentDashboardLayout({
                 <p className="font-bold text-sm">Olalekan O.S</p>
                 <p className="text-sm text-slate-600">
                   Matric No:{" "}
-                  {decode(localStorage.getItem("matric") as string) || "123456"}
+                  {matric || "123456"}
                 </p>
               </div>
 
@@ -240,7 +244,7 @@ export default function StudentDashboardLayout({
             <p className="font-bold text-sm">Olalekan O.S</p>
             <p className="text-sm text-slate-600">
               Matric No:{" "}
-              {decode(localStorage.getItem("matric") as string) || "123456"}
+              {matric || "123456"}
             </p>
           </div>
 

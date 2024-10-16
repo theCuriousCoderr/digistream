@@ -18,9 +18,11 @@ export default function FacultyDashboardLayout({
   const [activeTab, setActiveTab] = useState("Registrations");
   const [baseState, setBaseState] = useState(false);
   const [sideNav, setSideNav] = useState(false);
+  const [  matric, setMatric] = useState("");
   const pathName = usePathname();
 
   useEffect(() => {
+    setMatric(decode(localStorage.getItem("matric") as string));
     console.log(activeTab);
     async function AuthLayout() {
       const isAuth = await postHook("/student-dashboard", {});
@@ -96,7 +98,7 @@ export default function FacultyDashboardLayout({
             </figure>
             <p className="font-bold text-sm">Faculty</p>
             <p className="text-sm text-slate-600">
-              ID: {decode(localStorage.getItem("matric") as string)}{" "}
+              ID: {matric}
             </p>
           </div>
 
@@ -191,7 +193,7 @@ export default function FacultyDashboardLayout({
             </figure>
             <p className="font-bold text-sm">Faculty</p>
             <p className="text-sm text-slate-600">
-              ID: {decode(localStorage.getItem("matric") as string)}{" "}
+              ID: {matric}
             </p>
           </div>
 

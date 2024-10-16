@@ -18,9 +18,12 @@ export default function DeptDashboardLayout({
   const [activeTab, setActiveTab] = useState("Registrations");
   const [baseState, setBaseState] = useState(false);
   const [sideNav, setSideNav] = useState(false);
+  const [  matric, setMatric] = useState("")
   const pathName = usePathname();
 
+  
   useEffect(() => {
+    setMatric(decode(localStorage.getItem("matric") as string));
     console.log(activeTab);
     async function AuthLayout() {
       const isAuth = await postHook("/student-dashboard", {});
@@ -44,10 +47,7 @@ export default function DeptDashboardLayout({
     }, 500);
   }
 
-  // const activeTab = useStudentDashboardTabsStore((state) => state.tab);
-  // const updateActiveTab = useStudentDashboardTabsStore(
-  //   (state) => state.updateTab
-  // );
+
   const [idleColor, activeColor] = ["#94a3b8", "black"];
   const tabs = [
     {
@@ -100,7 +100,7 @@ export default function DeptDashboardLayout({
                 </figure>
                 <p className="font-bold text-sm">Department</p>
                 <p className="text-sm text-slate-600">
-                  ID: {decode(localStorage.getItem("matric") as string)}{" "}
+                  ID: {matric}
                 </p>
               </div>
 
@@ -197,7 +197,7 @@ export default function DeptDashboardLayout({
             </figure>
             <p className="font-bold text-sm">Department</p>
             <p className="text-sm text-slate-600">
-              ID: {decode(localStorage.getItem("matric") as string)}{" "}
+              ID: {matric}
             </p>
           </div>
 
