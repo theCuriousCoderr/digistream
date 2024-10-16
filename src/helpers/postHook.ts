@@ -16,7 +16,7 @@ function getToken() {
   }
 }
 
-export default async function postHook(requestPath: string, requestData: Record<string, unknown>) {
+export default async function postHook(requestPath: string, requestData: Record<string, unknown> | FormData) {
   const requestHeaders = {
     "Content-Type": "application/json",
     Authorization: getToken(),

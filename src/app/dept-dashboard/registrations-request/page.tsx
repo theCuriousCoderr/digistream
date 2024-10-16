@@ -28,6 +28,7 @@ export default function Page() {
   const [isFetching, setIsFetching] = useState(false);
   const [viewDocuments, setViewDocuments] = useState(false);
   const [approveDocuments, setApproveDocuments] = useState(false);
+  const [  matric, setMatric] = useState("");
 
   const updateDocument = useViewDocumentsModalStore(
     (state) => state.updateDocument
@@ -36,7 +37,7 @@ export default function Page() {
   async function getRegistrations(filter: string) {
     setIsFetching(true);
     const response = await postHook("/get-dept-registrations", {
-      regType: decode(localStorage.getItem("matric") as string),
+      regType: matric,
       role: "department",
     });
     if (response.success) {
@@ -53,6 +54,7 @@ export default function Page() {
     setIsFetching(false);
   }
   useEffect(() => {
+    setMatric(decode(localStorage.getItem("matric") as string));
     getRegistrations("pending");
   }, []);
 

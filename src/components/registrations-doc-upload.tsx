@@ -9,6 +9,7 @@ import facultyFileFields from "@/contents/facultyFileFields";
 import decode from "@/helpers/decode";
 import { useRouter } from "next/navigation";
 import { scienceDepartments, techDepartments } from "@/contents/departments";
+import postHook from "@/helpers/postHook";
 
 type FileIDUnion =
   | "courseFormFile"
@@ -131,13 +132,10 @@ export default function RegistrationsDocUpload({
     }
 
     try {
-      const result = await fetch("http://localhost:5000/registration", {
-        method: "POST",
-        body: testFormData,
-      });
-      const data = await result.json();
-      alert(JSON.stringify(data));
-      router.push("/student-dashboard/registrations/history");
+      const result = await postHook("/registration", testFormData )
+      if (result.success) {
+        router.push("/student-dashboard/registrations/history");
+      }
     } catch (err) {
       console.log(err);
       alert("Fetch Failed");
