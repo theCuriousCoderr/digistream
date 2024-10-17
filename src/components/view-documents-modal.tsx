@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import decode from "@/helpers/decode";
 import postHook from "@/helpers/postHook";
@@ -105,16 +105,16 @@ export default function ViewDocumentsModal({
           dept: decode(localStorage.getItem("matric") as string),
         });
         if (response.success) {
-            alert(response.success)
+          alert(response.success);
         }
         if (response.warning) {
-            alert(response.success)
+          alert(response.success);
         }
         if (response.error) {
-            alert(response.error)
+          alert(response.error);
         }
       } catch (err) {
-        alert("Couldn't Complete Action")
+        alert("Couldn't Complete Action");
         console.log(err);
       }
     }
@@ -161,7 +161,11 @@ export default function ViewDocumentsModal({
                 onClick={() => handleApproval("rejected")}
                 className={` inline-block px-4 py-2 bg-red-500 disabled:bg-slate-300 hover:bg-red-700 border text-white border-digiblue border-opacity-20 rounded-lg`}
               >
-                {isApproving ? <Spinner size="size=5" /> : <p>Reject Registration</p> }
+                {isApproving ? (
+                  <Spinner size="size=5" />
+                ) : (
+                  <p>Reject Registration</p>
+                )}
               </button>
             </div>
             <div>
@@ -170,7 +174,11 @@ export default function ViewDocumentsModal({
                 onClick={() => handleApproval("accepted")}
                 className={` inline-block px-4 py-2 bg-green-500 disabled:bg-slate-300 hover:bg-green-700 text-white border border-digiblue border-opacity-20 rounded-lg`}
               >
-                {isApproving ? <Spinner size="size=5" /> : <p>Approve Registration</p> }
+                {isApproving ? (
+                  <Spinner size="size=5" />
+                ) : (
+                  <p>Approve Registration</p>
+                )}
               </button>
             </div>
           </div>
@@ -221,7 +229,8 @@ export default function ViewDocumentsModal({
                     onClick={() => setSelectedUrl(url)}
                     className="p-1 bg-digiblue hover:bg-blue-700 text-white"
                   >
-                    {id + 1}. Load PDF
+                    {id + 1}.{" "}
+                    {selectedUrl === url ? "PDF In View" : "Load PDF Up"}
                   </button>
                   <iframe
                     onClick={() => setSelectedUrl(url)}
@@ -236,28 +245,29 @@ export default function ViewDocumentsModal({
         </div>
 
         <div className="hidden absolute bottom-0 xs:max-md:flex h-[30vh] w-full bg-slate-100 overflow-x-auto items-center gap-5 pt-5 pb-0  scrollbar">
-            {pdfUrl.map((url, id) => {
-              return (
-                <div
-                  key={url}
-                  className="relative h-full aspect-[0.7/1] bg-white shadow-md"
+          {pdfUrl.map((url, id) => {
+            return (
+              <div
+                key={url}
+                className="relative h-full aspect-[0.7/1] bg-white shadow-md"
+              >
+                <button
+                  onClick={() => setSelectedUrl(url)}
+                  className="p-1 bg-digiblue hover:bg-blue-700 text-white"
                 >
-                  <button
-                    onClick={() => setSelectedUrl(url)}
-                    className="p-1 bg-digiblue hover:bg-blue-700 text-white"
-                  >
-                    {id + 1}. Load PDF
-                  </button>
-                  <iframe
-                    onClick={() => setSelectedUrl(url)}
-                    className="block size-full hover:bg-red-800"
-                    title="PdfFrame"
-                    src={url}
-                  ></iframe>
-                </div>
-              );
-            })}
-          </div>
+                  {id + 1}.{" "}
+                  {selectedUrl === url ? "PDF In View" : "Load PDF Up"}
+                </button>
+                <iframe
+                  onClick={() => setSelectedUrl(url)}
+                  className="block size-full hover:bg-red-800"
+                  title="PdfFrame"
+                  src={url}
+                ></iframe>
+              </div>
+            );
+          })}
+        </div>
       </div>
     );
   }

@@ -9,7 +9,7 @@ import facultyFileFields from "@/contents/facultyFileFields";
 import decode from "@/helpers/decode";
 import { useRouter } from "next/navigation";
 import { scienceDepartments, techDepartments } from "@/contents/departments";
-import postHook from "@/helpers/postHook";
+import BE_URL from "@/helpers/getEnvironment";
 
 type FileIDUnion =
   | "courseFormFile"
@@ -49,15 +49,19 @@ export default function RegistrationsDocUpload({
   }
   // File Upload By Button Click
   function handleFileChange(e: ChangeEvent<HTMLInputElement>, param: string) {
-    if (e.target.files && e.target.files.length > 0) {
-      // access the selected file
-      const file = e.target.files[0];
-      // update state with the file name
-      setFilesName({ ...filesName, [param]: file.name });
-    } else {
-      console.error("No file selected");
-    }
-  }
+    const file = e.target?.files?.[0];
+      if (file) {
+        // alert(JSON.stringify(file))
+        // alert(JSON.stringify(file))
+        console.log(`Console Log File: ${file}`)
+        // access the selected file
+       
+        // update state with the file name
+        setFilesName({ ...filesName, [param]: file.name });
+      } else {
+        console.error("No file selected");
+      }
+    }
   // handles when a dragged file is over the drop zone
   function addDragOverClass(e: React.DragEvent<HTMLDivElement>) {
     e.preventDefault();
@@ -86,6 +90,7 @@ export default function RegistrationsDocUpload({
 
     // if the dragged file is not empty
     if (files && files.length > 0) {
+      alert(JSON.stringify(files[0]))
       // access the data file from the dragged file
       const file = files[0];
       // store the accessed data file into the input file
@@ -121,7 +126,9 @@ export default function RegistrationsDocUpload({
     const testFormData = new FormData();
 
     const formValues = getAllRegFormValues();
-    if (formValues) {
+    console.log(`formValues: ${formValues}`)
+    // alert(JSON.stringify(formValues))
+    if (formValues) { 
       for (const value of formValues) {
         if (value.name === "Warning") {
           alert("Fill all file fields");
@@ -130,12 +137,16 @@ export default function RegistrationsDocUpload({
         testFormData.append(value.name, value.value);
       }
     }
+    // alert(JSON.stringify(testFormData))
 
     try {
-      const result = await postHook("/registration", testFormData )
-      if (result.success) {
-        router.push("/student-dashboard/registrations/history");
-      }
+      const result = await fetch(`${BE_URL}/registration`, {
+        method: "POST",
+        body: testFormData,
+      });
+      const data = await result.json();
+      alert(JSON.stringify(data));
+      router.push("/student-dashboard/registrations/history");
     } catch (err) {
       console.log(err);
       alert("Fetch Failed");
@@ -263,14 +274,14 @@ export default function RegistrationsDocUpload({
               {(regType === "Faculty Registration"
                 ? facultyFileFields
                 : departmentalFileFields
-              ).map((file) => {
+              ).map((formFile) => {
                 return (
-                  <div key={file.id} className="w-[48%] xs:max-md:w-full">
+                  <div key={formFile.id} className="w-[48%] xs:max-md:w-full">
                     {/* Drop Zone Label */}
-                    <label htmlFor={file.id}>{file.label}</label>
+                    <label htmlFor={formFile.id}>{formFile.label}</label>
                     {/* Drop Zone */}
                     <div
-                      onDrop={(e) => handleFileDrop(e, file.id)}
+                      onDrop={(e) => handleFileDrop(e, formFile.id)}
                       onDragLeave={(e) => removeDragOverClass(e)}
                       onDragOver={(e) => addDragOverClass(e)}
                       className="w-full py-20 xs:max-md:py-2 border-2 border-digiblue border-opacity-30 rounded-lg center flex-col"
@@ -282,8 +293,8 @@ export default function RegistrationsDocUpload({
                         <span className="xs:max-md:hidden">Drag and Drop File Here or</span>
                         <input
                           required
-                          onChange={(e) => handleFileChange(e, file.id)}
-                          id={file.id}
+                          onChange={(e) => handleFileChange(e, formFile.id)}
+                          id={formFile.id}
                           type="file"
                           accept=".pdf"
                           multiple={false}
@@ -291,22 +302,22 @@ export default function RegistrationsDocUpload({
                         />
                         <button
                           type="button"
-                          onClick={() => handleFileUpload(file.id)}
+                          onClick={() => handleFileUpload(formFile.id)}
                           className="text-digiblue"
                         >
                           Choose File
                         </button>
                       </p>
                       <div className="center text-sm font-bold text-slate-400">
-                        {filesName[file.id as FileIDUnion] === "loading" && (
+                        {filesName[formFile.id as FileIDUnion] === "loading" && (
                           <Spinner size="size-10" />
                         )}
-                        {filesName[file.id as FileIDUnion] !== "loading" &&
-                          filesName[file.id as FileIDUnion] !== "" && (
+                        {filesName[formFile.id as FileIDUnion] !== "loading" &&
+                          filesName[formFile.id as FileIDUnion] !== "" && (
                             <p>
                               Selected File:{" "}
                               <span className="text-slate-400 font-normal">
-                                {filesName[file.id as FileIDUnion]}{" "}
+                                {filesName[formFile.id as FileIDUnion]}{" "}
                               </span>{" "}
                             </p>
                           )}

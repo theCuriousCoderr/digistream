@@ -6,7 +6,7 @@ export default function getAllRegFormValues() {
   const department = document.getElementById("department") as HTMLInputElement;
   const level = document.getElementById("level") as HTMLInputElement;
   const matric = document.getElementById("matric") as HTMLInputElement;
-  
+
 
   const schoolFessReceiptFile = document.getElementById(
     "schoolFessReceiptFile"

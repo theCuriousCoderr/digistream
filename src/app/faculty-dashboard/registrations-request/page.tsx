@@ -28,6 +28,7 @@ export default function Page() {
   const [isFetching, setIsFetching] = useState(false);
   const [viewDocuments, setViewDocuments] = useState(false);
   const [approveDocuments, setApproveDocuments] = useState(false);
+  const [matric, setMatric] = useState("");
 
   const updateDocument = useViewDocumentsModalStore(
     (state) => state.updateDocument
@@ -36,7 +37,7 @@ export default function Page() {
   async function getRegistrations(filter: string) {
     setIsFetching(true);
     const response = await postHook("/get-dept-registrations", {
-      regType: decode(localStorage.getItem("matric") as string),
+      regType: matric,
       role: "faculty",
     });
     if (response.success) {
@@ -53,6 +54,7 @@ export default function Page() {
     setIsFetching(false);
   }
   useEffect(() => {
+    setMatric(decode(localStorage.getItem("matric") as string));
     getRegistrations("pending");
   }, []);
 
@@ -143,72 +145,74 @@ export default function Page() {
         <p className="text-2xl">No {requestStatus} Registrations Requests</p>
       )}
 
-
-<div className="xs:max-md:w-full xs:max-md:overflow-auto">
-{!isFetching && filteredTable.length >= 1 && (
-        <table className="w-full xs:max-md:w-[300%]">
-          <tr className="text-left">
-            <th>Matric</th>
-            <th>Level</th>
-            <th>Date</th>
-            <th>Status</th>
-            <th>Comment</th>
-            <th>Actions</th>
-          </tr>
-          {(filteredTable as RegTableType[]).map((row) => {
-            return (
-              <tr key={row.matric} className="odd:bg-slate-200 text-sm">
-                <td>{row.matric || "111111"}</td>
-                <td>{row.level || "111"}</td>
-                <td>{row.date || "N/A"}</td>
-                <td>
-                  {row.status === "pending" && (
-                    <span className="bg-blue-500 bg-opacity-20 text-blue-600 px-3 py-1 rounded-md">
-                      {row.status}
-                    </span>
-                  )}
-                  {row.status === "accepted" && (
-                    <span className="bg-green-500 bg-opacity-20 text-green-600 px-3 py-1 rounded-md">
-                      {row.status}
-                    </span>
-                  )}
-                  {row.status === "rejected" && (
-                    <span className="bg-red-500 bg-opacity-20 text-red-600 px-3 py-1 rounded-md">
-                      {row.status}
-                    </span>
-                  )}
-                </td>
-                <td className={`${row.status === "pending" && "text-blue-600"} ${row.status === "accepted" && "text-green-600"} ${row.status === "rejected" && "text-red-600"}`}>
-                  {row.comment ||
-                    "You can also make your custom PDF viewer using the pdfjs library as I mentioned above. But if you don't need such branding and customization, the browser's default PDF viewer is fine for this purpose."}
-                </td>
-                <td>
-                  <button
-                    onClick={() => handleViewDocuments(row)}
-                    className="px-2 border hover:bg-blue-300"
+      <div className="xs:max-md:w-full xs:max-md:overflow-auto">
+        {!isFetching && filteredTable.length >= 1 && (
+          <table className="w-full xs:max-md:w-[300%]">
+            <tr className="text-left">
+              <th>Matric</th>
+              <th>Level</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Comment</th>
+              <th>Actions</th>
+            </tr>
+            {(filteredTable as RegTableType[]).map((row) => {
+              return (
+                <tr key={row.date} className=" text-sm">
+                  <td className="py-2">{row.matric || "111111"}</td>
+                  <td>{row.level || "111"}</td>
+                  <td>{row.date || "N/A"}</td>
+                  <td>
+                    {row.status === "pending" && (
+                      <span className="bg-blue-500 bg-opacity-20 text-blue-600 px-3 py-1 rounded-md">
+                        {row.status}
+                      </span>
+                    )}
+                    {row.status === "accepted" && (
+                      <span className="bg-green-500 bg-opacity-20 text-green-600 px-3 py-1 rounded-md">
+                        {row.status}
+                      </span>
+                    )}
+                    {row.status === "rejected" && (
+                      <span className="bg-red-500 bg-opacity-20 text-red-600 px-3 py-1 rounded-md">
+                        {row.status}
+                      </span>
+                    )}
+                  </td>
+                  <td
+                    className={`${
+                      row.status === "pending" && "text-blue-600"
+                    } ${row.status === "accepted" && "text-green-600"} ${
+                      row.status === "rejected" && "text-red-600"
+                    }`}
                   >
-                    View Documents
-                  </button>
-                  <button
-                    hidden={row.status !== "pending"}
-                    onClick={() => handleApproveDocuments(row)}
-                    className="px-2 border hover:bg-green-400"
-                  >
-                    Approve/Reject
-                  </button>
-                </td>
-                {/* <td hidden={row.status === "pending"}>
+                    {row.comment ||
+                      "You can also make your custom PDF viewer using the pdfjs library as I mentioned above. But if you don't need such branding and customization, the browser's default PDF viewer is fine for this purpose."}
+                  </td>
+                  <td>
+                    <button
+                      onClick={() => handleViewDocuments(row)}
+                      className="px-2 border hover:bg-blue-300"
+                    >
+                      View Documents
+                    </button>
+                    <button
+                      hidden={row.status !== "pending"}
+                      onClick={() => handleApproveDocuments(row)}
+                      className="px-2 border hover:bg-green-400"
+                    >
+                      Approve/Reject
+                    </button>
+                  </td>
+                  {/* <td hidden={row.status === "pending"}>
                   Action Taken Already
                 </td> */}
-              </tr>
-            );
-          })}
-        </table>
-      )}
-
+                </tr>
+              );
+            })}
+          </table>
+        )}
       </div>
-
-     
     </main>
   );
 }
