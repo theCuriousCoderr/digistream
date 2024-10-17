@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import Spinner from "./spinner";
 
 type DocumentType = {
+  _id: string;
   matric: string;
   level: string;
   schoolFeesReceipt: string;
@@ -99,11 +100,13 @@ export default function ViewDocumentsModal({
     if (comment) {
       try {
         const response = await postHook("/dept-registrations-approval", {
+          id: studentDocument._id,
           handle: param,
           comment: comment.value,
           matric: studentDocument.matric,
           dept: decode(localStorage.getItem("matric") as string),
         });
+
         if (response.success) {
           alert(response.success);
         }
@@ -119,6 +122,8 @@ export default function ViewDocumentsModal({
       }
     }
     setIsApproving(false);
+    setApproveDocuments(false);
+    window.location.reload();
   }
 
   useEffect(() => {
@@ -227,7 +232,7 @@ export default function ViewDocumentsModal({
                 >
                   <button
                     onClick={() => setSelectedUrl(url)}
-                    className="p-1 bg-digiblue hover:bg-blue-700 text-white"
+                    className={`p-1 ${selectedUrl === url ? "bg-green-500" : "bg-digiblue"} bg-digiblue hover:bg-blue-700 text-white`}
                   >
                     {id + 1}.{" "}
                     {selectedUrl === url ? "PDF In View" : "Load PDF Up"}
@@ -253,7 +258,7 @@ export default function ViewDocumentsModal({
               >
                 <button
                   onClick={() => setSelectedUrl(url)}
-                  className="p-1 bg-digiblue hover:bg-blue-700 text-white"
+                  className={`p-1 ${selectedUrl === url ? "bg-green-500" : "bg-digiblue"} bg-digiblue hover:bg-blue-700 text-white`}
                 >
                   {id + 1}.{" "}
                   {selectedUrl === url ? "PDF In View" : "Load PDF Up"}
