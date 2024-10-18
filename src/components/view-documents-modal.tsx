@@ -212,7 +212,9 @@ export default function ViewDocumentsModal({
           {/* middle */}
           <div className="relative h-screen xs:max-md:h-full w-1/2 bg-slate-100">
             {selectedUrl === "" ? (
-              <Spinner size="size-20" />
+              <div className="size-full center">
+                <Spinner size="size-20" />
+              </div>
             ) : (
               <iframe
                 className="block size-full"
@@ -228,18 +230,20 @@ export default function ViewDocumentsModal({
               return (
                 <div
                   key={url}
-                  className="relative w-[80%] aspect-[1/1.5] bg-white shadow-md"
+                  className="relative w-[80%] aspect-[1/1.5] shadow-md"
                 >
                   <button
                     onClick={() => setSelectedUrl(url)}
-                    className={`p-1 ${selectedUrl === url ? "bg-green-500" : "bg-digiblue"} bg-digiblue hover:bg-blue-700 text-white`}
+                    className={`p-1 ${
+                      selectedUrl === url ? "bg-green-500" : "bg-digiblue hover:bg-blue-700"
+                    }   text-white`}
                   >
                     {id + 1}.{" "}
-                    {selectedUrl === url ? "PDF In View" : "Load PDF Up"}
+                    {selectedUrl === url ? "Viewing ..." : "Load PDF"}
                   </button>
                   <iframe
                     onClick={() => setSelectedUrl(url)}
-                    className="block size-full hover:bg-red-800"
+                    className="block size-full bg-gradient-to-tr from-gray-400"
                     title="PdfFrame"
                     src={url}
                   ></iframe>
@@ -254,18 +258,20 @@ export default function ViewDocumentsModal({
             return (
               <div
                 key={url}
-                className="relative h-full aspect-[0.7/1] bg-white shadow-md"
+                className="relative h-full aspect-[0.7/1] shadow-md"
               >
                 <button
                   onClick={() => setSelectedUrl(url)}
-                  className={`p-1 ${selectedUrl === url ? "bg-green-500" : "bg-digiblue"} bg-digiblue hover:bg-blue-700 text-white`}
+                  className={`p-1 ${
+                    selectedUrl === url ? "bg-green-500" : "bg-digiblue hover:bg-blue-700"
+                  } text-white`}
                 >
                   {id + 1}.{" "}
-                  {selectedUrl === url ? "PDF In View" : "Load PDF Up"}
+                  {selectedUrl === url ? "Viewing ..." : "Load PDF"}
                 </button>
                 <iframe
                   onClick={() => setSelectedUrl(url)}
-                  className="block size-full hover:bg-red-800"
+                  className="block size-full bg-gradient-to-tr from-gray-400"
                   title="PdfFrame"
                   src={url}
                 ></iframe>

@@ -59,7 +59,7 @@ export default function Page() {
             }
           }, 200);
         }
-        if (response.warning) {
+        if (response?.warning) {
           setSignupAlert(response.warning);
         }
         if (response?.error) {

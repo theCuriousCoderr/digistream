@@ -38,13 +38,21 @@ export default function StudentDashboardLayout({
     setMatric(decode(localStorage.getItem("matric") as string));
     console.log(activeTab);
     async function AuthLayout() {
-      const isAuth = await postHook("/student-dashboard", {});
-      if (isAuth.warning) {
-        window.location.href = "/login";
-        console.log("ola");
-      }
+      const isAuth = await postHook("/student-dashboard", {
+        matric: decode(localStorage.getItem("matric") as string)
+      });
+      
       if (isAuth.success) {
+        alert(isAuth.success);
         setBaseState(false);
+      }
+      if (isAuth.warning) {
+        alert(isAuth.warning);
+        window.location.href = "/login";
+      }
+      if (isAuth.error) {
+        alert(isAuth.error);
+        window.location.href = "/login";
       }
     }
 

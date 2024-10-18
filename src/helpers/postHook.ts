@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import encode from "./encode";
 import BE_URL from "./getEnvironment";
@@ -6,6 +6,13 @@ import BE_URL from "./getEnvironment";
 function getToken() {
   let token = localStorage.getItem("token") as string;
   let refreshToken = localStorage.getItem("refreshToken") as string;
+
+  if (
+    JSON.stringify(refreshToken) === "null" ||
+    JSON.stringify(token) === "null"
+  ) {
+    return "";
+  }
 
   if (token !== "undefined" && refreshToken !== "undefined") {
     token = JSON.parse(token);
@@ -16,7 +23,10 @@ function getToken() {
   }
 }
 
-export default async function postHook(requestPath: string, requestData: Record<string, unknown> | FormData) {
+export default async function postHook(
+  requestPath: string,
+  requestData: Record<string, unknown> | FormData
+) {
   const requestHeaders = {
     "Content-Type": "application/json",
     Authorization: getToken(),
@@ -34,7 +44,7 @@ export default async function postHook(requestPath: string, requestData: Record<
     const result = await response.json();
 
     if (response.status === 200) {
-      if (requestPath === "/login") {
+      if ((requestPath === "/student-dashboard" || requestPath === "/login") && result.token) {
         localStorage.setItem("token", JSON.stringify(result.token));
         localStorage.setItem(
           "refreshToken",
